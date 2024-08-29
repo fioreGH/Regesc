@@ -27,6 +27,8 @@ public class CrudProfessorService {
             System.out.println("0 - voltar ao menu anterior");
             System.out.println("1 - cadastrar novo professor");
             System.out.println("2 - atualizar um professor");
+            System.out.println("3 - visualizar todos os professor");
+            System.out.println("4 - Deletar um professor");
 
             int opcao = scanner.nextInt();
 
@@ -36,6 +38,12 @@ public class CrudProfessorService {
                     break;
                 case 2:
                     this.atualizarProfessor(scanner);
+                    break;
+                case 3:
+                    this.visualizarProfessor();
+                    break;
+                case 4:
+                    this.deletarProfessor(scanner);
                     break;
                 default:
                     isTrue = false;
@@ -88,8 +96,35 @@ public class CrudProfessorService {
         else{
             System.out.print("O id informado: " + id + " é invalido\n");
         }
+    }
 
+
+    private void visualizarProfessor(){
+
+        Iterable<Professor> professores = this.professorRepository.findAll();
+
+        professores.forEach(System.out::println);
+    }
+
+    private void deletarProfessor(Scanner scanner){
+
+        System.out.print("Digite o id do Professor a ser atualizado: ");
+        Long id = scanner.nextLong();
+
+        Optional<Professor> optional = this.professorRepository.findById(id);
+
+        if (optional.isPresent()){
+
+            this.professorRepository.deleteById(id);
+
+            System.out.println("Professor deletado com sucesso!\n");
+
+        }
+        else{
+            System.out.print("O id informado: " + id + " é invalido\n");
+        }
 
     }
+
 
 }
